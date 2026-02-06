@@ -1,0 +1,73 @@
+---
+import BaseLayout from '../layouts/BaseLayout.astro';
+import SectionHeading from '../components/SectionHeading.astro';
+import TagFilter from '../components/TagFilter.astro';
+import Card from '../components/Card.astro';
+import { repos, getAllRepoTags } from '../data/repos';
+
+const tags = getAllRepoTags();
+
+// Sort by most recent commit
+const sortedRepos = [...repos].sort((a, b) => new Date(b.lastCommit).valueOf() - new Date(a.lastCommit).valueOf());
+---
+<BaseLayout title="Code — Justin Castilla">
+  <section class="section">
+    <div class="container">
+      <SectionHeading
+        title="Code"
+        description="Open-source repositories from talks, articles, and demos."
+      />
+
+      <TagFilter tags={tags} allLabel="All Repos" />
+
+      <div class="grid grid-2">
+        {sortedRepos.map((repo) => (
+          <Card
+            title={repo.name}
+            description={repo.description}
+            href={repo.url}
+            tags={[...(repo.language ? [repo.language] : []), ...repo.topics]}
+            type="repo"
+            meta={undefined}
+            external
+          />
+        ))}
+      </div>
+
+      <p class="empty-state" id="empty-state">
+        No repos match that filter. Try another tag.
+      </p>
+    </div>
+  </section>
+</BaseLayout>
+
+<style>
+  .empty-state {
+    display: none;
+    text-align: center;
+    color: var(--color-text-tertiary);
+    padding: var(--space-2xl) 0;
+    font-size: 0.95rem;
+  }
+</style>
+
+<script>
+  function watchFilter() {
+    const grid = document.querySelector('.grid');
+    const empty = document.getElementById('empty-state');
+    if (!grid || !empty) return;
+
+    const observer = new MutationObserver(() => {
+      const cards = grid.querySelectorAll('.card');
+      const visible = [...cards].filter(
+        (c) => (c as HTMLElement).style.display !== 'none'
+      );
+      empty.style.display = visible.length === 0 ? 'block' : 'none';
+    });
+
+    observer.observe(grid, { subtree: true, attributes: true, attributeFilter: ['style'] });
+  }
+
+  watchFilter();
+  document.addEventListener('astro:after-swap', watchFilter);
+</script>

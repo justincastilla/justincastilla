@@ -1,0 +1,75 @@
+---
+import BaseLayout from '../layouts/BaseLayout.astro';
+import SectionHeading from '../components/SectionHeading.astro';
+import TagFilter from '../components/TagFilter.astro';
+import Card from '../components/Card.astro';
+import { videos, getAllVideoTags, getYouTubeThumbnail } from '../data/videos';
+
+const tags = getAllVideoTags();
+---
+<BaseLayout title="Videos — Justin Castilla">
+  <section class="section">
+    <div class="container">
+      <SectionHeading
+        title="Videos"
+        description="Tutorials, explainers, and demos covering data structures, search technology, AI/ML, and more."
+      />
+
+      <TagFilter tags={tags} allLabel="All Videos" />
+
+      <div class="grid grid-3">
+        {videos.map((video) => (
+          <Card
+            title={video.title}
+            description={video.description}
+            href={video.url}
+            tags={[
+              video.company,
+              video.type.charAt(0).toUpperCase() + video.type.slice(1),
+              ...video.topics,
+            ]}
+            type="video"
+            meta={video.views ? `${video.views} views` : undefined}
+            thumbnail={getYouTubeThumbnail(video.url) ?? undefined}
+            external
+          />
+        ))}
+      </div>
+
+      <p class="empty-state" id="empty-state">
+        No videos match that filter. Try another tag.
+      </p>
+    </div>
+  </section>
+</BaseLayout>
+
+<style>
+  .empty-state {
+    display: none;
+    text-align: center;
+    color: var(--color-text-tertiary);
+    padding: var(--space-2xl) 0;
+    font-size: 0.95rem;
+  }
+</style>
+
+<script>
+  function watchFilter() {
+    const grid = document.querySelector('.grid');
+    const empty = document.getElementById('empty-state');
+    if (!grid || !empty) return;
+
+    const observer = new MutationObserver(() => {
+      const cards = grid.querySelectorAll('.card');
+      const visible = [...cards].filter(
+        (c) => (c as HTMLElement).style.display !== 'none'
+      );
+      empty.style.display = visible.length === 0 ? 'block' : 'none';
+    });
+
+    observer.observe(grid, { subtree: true, attributes: true, attributeFilter: ['style'] });
+  }
+
+  watchFilter();
+  document.addEventListener('astro:after-swap', watchFilter);
+</script>

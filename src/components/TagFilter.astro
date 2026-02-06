@@ -1,0 +1,83 @@
+---
+interface Props {
+  tags: string[];
+  allLabel?: string;
+  filterTarget?: string;
+}
+
+const { tags, allLabel = 'All', filterTarget = '.card' } = Astro.props;
+---
+<div class="tag-filter" data-filter-target={filterTarget}>
+  <button class="filter-btn active" data-filter="all">{allLabel}</button>
+  {tags.map((tag) => (
+    <button class="filter-btn" data-filter={tag}>{tag}</button>
+  ))}
+</div>
+
+<style>
+  .tag-filter {
+    display: flex;
+    flex-wrap: wrap;
+    gap: var(--space-sm);
+    margin-bottom: var(--space-xl);
+  }
+
+  .filter-btn {
+    font-size: 0.85rem;
+    font-weight: 500;
+    padding: 0.4rem 0.9rem;
+    border: 1px solid var(--color-border);
+    border-radius: 999px;
+    background: var(--color-surface);
+    color: var(--color-text-secondary);
+    cursor: pointer;
+    transition: all var(--transition-fast);
+  }
+
+  .filter-btn:hover {
+    border-color: var(--color-text-tertiary);
+    color: var(--color-text);
+  }
+
+  .filter-btn.active {
+    background: var(--color-tag-active-bg);
+    color: var(--color-tag-active-text);
+    border-color: var(--color-tag-active-bg);
+  }
+</style>
+
+<script>
+  function initTagFilter() {
+    document.querySelectorAll('.tag-filter').forEach((filterContainer) => {
+      const target = filterContainer.getAttribute('data-filter-target') || '.card';
+      const buttons = filterContainer.querySelectorAll('.filter-btn');
+      const cards = document.querySelectorAll(target);
+
+      buttons.forEach((btn) => {
+        btn.addEventListener('click', () => {
+          // Update active button
+          buttons.forEach((b) => b.classList.remove('active'));
+          btn.classList.add('active');
+
+          const filter = btn.getAttribute('data-filter');
+
+          cards.forEach((card) => {
+            if (filter === 'all') {
+              (card as HTMLElement).style.display = '';
+              return;
+            }
+
+            const cardTags = card.getAttribute('data-tags')?.split(',') || [];
+            const matches = cardTags.some(
+              (t) => t.toLowerCase().trim() === filter?.toLowerCase().trim()
+            );
+            (card as HTMLElement).style.display = matches ? '' : 'none';
+          });
+        });
+      });
+    });
+  }
+
+  initTagFilter();
+  document.addEventListener('astro:after-swap', initTagFilter);
+</script>

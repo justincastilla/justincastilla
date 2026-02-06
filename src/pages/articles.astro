@@ -1,0 +1,70 @@
+---
+import BaseLayout from '../layouts/BaseLayout.astro';
+import SectionHeading from '../components/SectionHeading.astro';
+import TagFilter from '../components/TagFilter.astro';
+import Card from '../components/Card.astro';
+import { articles, getAllArticleTags } from '../data/articles';
+
+const tags = getAllArticleTags();
+---
+<BaseLayout title="Articles — Justin Castilla">
+  <section class="section">
+    <div class="container">
+      <SectionHeading
+        title="Articles"
+        description="Technical articles on search, AI/ML, agent protocols, and developer tooling."
+      />
+
+      <TagFilter tags={tags} allLabel="All Articles" />
+
+      <div class="grid grid-2">
+        {articles.map((article) => (
+          <Card
+            title={article.title}
+            description={article.description}
+            href={article.url}
+            tags={[article.publisher, ...article.topics]}
+            type="article"
+            meta={article.date}
+            external
+          />
+        ))}
+      </div>
+
+      <p class="empty-state" id="empty-state">
+        No articles match that filter. Try another tag.
+      </p>
+    </div>
+  </section>
+</BaseLayout>
+
+<style>
+  .empty-state {
+    display: none;
+    text-align: center;
+    color: var(--color-text-tertiary);
+    padding: var(--space-2xl) 0;
+    font-size: 0.95rem;
+  }
+</style>
+
+<script>
+  function watchFilter() {
+    const grid = document.querySelector('.grid');
+    const empty = document.getElementById('empty-state');
+    if (!grid || !empty) return;
+
+    const observer = new MutationObserver(() => {
+      const cards = grid.querySelectorAll('.card');
+      const visible = [...cards].filter(
+        (c) => (c as HTMLElement).style.display !== 'none'
+      );
+      empty.style.display = visible.length === 0 ? 'block' : 'none';
+    });
+
+    observer.observe(grid, { subtree: true, attributes: true, attributeFilter: ['style'] });
+  }
+
+  watchFilter();
+  document.addEventListener('astro:after-swap', watchFilter);
+</script>

@@ -1,0 +1,92 @@
+---
+import BaseLayout from '../layouts/BaseLayout.astro';
+import Hero from '../components/Hero.astro';
+import SectionHeading from '../components/SectionHeading.astro';
+import Card from '../components/Card.astro';
+import { videos, getYouTubeThumbnail } from '../data/videos';
+import { articles } from '../data/articles';
+
+const featuredVideos = videos.slice(0, 3);
+const featuredArticles = articles.slice(0, 3);
+---
+<BaseLayout title="Justin Castilla — Developer Advocate">
+  <Hero />
+
+  <!-- Featured Videos -->
+  <section class="section">
+    <div class="container">
+      <SectionHeading
+        title="Featured Videos"
+        description="Tutorials and explainers covering data structures, search, and AI/ML."
+      />
+      <div class="grid grid-3">
+        {featuredVideos.map((video) => (
+          <Card
+            title={video.title}
+            description={video.description}
+            href={video.url}
+            tags={[video.company, ...video.topics]}
+            type="video"
+            meta={video.views ? `${video.views} views` : undefined}
+            thumbnail={getYouTubeThumbnail(video.url) ?? undefined}
+            external
+          />
+        ))}
+      </div>
+      <div class="section-more">
+        <a href="/videos" class="view-all">View all videos &rarr;</a>
+      </div>
+    </div>
+  </section>
+
+  <!-- Featured Articles -->
+  <section class="section section-alt">
+    <div class="container">
+      <SectionHeading
+        title="Latest Articles"
+        description="Technical writing on search, AI agents, and developer tooling."
+      />
+      <div class="grid grid-3">
+        {featuredArticles.map((article) => (
+          <Card
+            title={article.title}
+            description={article.description}
+            href={article.url}
+            tags={[article.publisher, ...article.topics]}
+            type="article"
+            meta={article.date}
+            external
+          />
+        ))}
+      </div>
+      <div class="section-more">
+        <a href="/articles" class="view-all">View all articles &rarr;</a>
+      </div>
+    </div>
+  </section>
+</BaseLayout>
+
+<style>
+  .section-alt {
+    background: var(--color-surface-raised);
+  }
+
+  .section-more {
+    margin-top: var(--space-xl);
+    text-align: center;
+  }
+
+  .view-all {
+    font-size: 0.95rem;
+    font-weight: 500;
+    color: var(--color-accent);
+    text-decoration: none;
+    transition: color var(--transition-fast);
+  }
+
+  .view-all:hover {
+    color: var(--color-accent-hover);
+    text-decoration: underline;
+    text-underline-offset: 3px;
+  }
+</style>

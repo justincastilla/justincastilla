@@ -1,0 +1,183 @@
+---
+interface Props {
+  title?: string;
+  subtitle?: string;
+}
+
+const {
+  title = "Justin Castilla",
+  subtitle = "Experienced Developer Advocate specializing in search, AI/ML, and observability technologies, with a proven track record of creating educational content that demystifies complex data structures and technical concepts.",
+} = Astro.props;
+
+const companies = ['Elastic', 'Redis', 'Sauce Labs', 'General Assembly'];
+---
+<section class="hero">
+  <div class="container hero-inner">
+    <div class="hero-content">
+      <p class="hero-greeting">Hello, and welcome!</p>
+      <h1 class="hero-title">{title}</h1>
+      <p class="hero-subtitle">{subtitle}</p>
+      <div class="hero-companies">
+        {companies.map((company, i) => (
+          <span class="company-tag">
+            {company}{i < companies.length - 1 && <span class="company-sep" aria-hidden="true">&middot;</span>}
+          </span>
+        ))}
+      </div>
+      <div class="hero-cta">
+        <a href="/videos" class="btn btn-primary">View My Work</a>
+        <a href="/blog" class="btn btn-secondary">Read the Blog</a>
+      </div>
+    </div>
+    <div class="hero-photo">
+      <img
+        src="/images/headshot-justin-castilla.png"
+        alt="Justin Castilla"
+        width="280"
+        height="280"
+      />
+    </div>
+  </div>
+</section>
+
+<style>
+  .hero {
+    padding-block: var(--space-4xl) var(--space-3xl);
+    border-bottom: 1px solid var(--color-border);
+  }
+
+  .hero-inner {
+    max-width: var(--max-width);
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: var(--space-2xl);
+  }
+
+  .hero-content {
+    max-width: 620px;
+    flex: 1;
+  }
+
+  .hero-photo {
+    flex-shrink: 0;
+  }
+
+  .hero-photo img {
+    width: 280px;
+    height: 280px;
+    object-fit: cover;
+    border-radius: 50%;
+    border: 3px solid var(--color-border);
+    box-shadow: 0 4px 24px var(--color-shadow-lg);
+  }
+
+  .hero-greeting {
+    font-size: 1.1rem;
+    color: var(--color-accent);
+    font-weight: 500;
+    margin-bottom: var(--space-sm);
+  }
+
+  .hero-title {
+    font-size: 3.25rem;
+    font-weight: 700;
+    letter-spacing: -0.03em;
+    line-height: 1.1;
+    margin-bottom: var(--space-lg);
+  }
+
+  .hero-subtitle {
+    font-size: 1.15rem;
+    line-height: 1.7;
+    color: var(--color-text-secondary);
+    margin-bottom: var(--space-lg);
+  }
+
+  .hero-companies {
+    display: flex;
+    flex-wrap: wrap;
+    gap: var(--space-xs);
+    margin-bottom: var(--space-xl);
+  }
+
+  .company-tag {
+    font-size: 0.875rem;
+    color: var(--color-text-tertiary);
+    font-weight: 500;
+  }
+
+  .company-sep {
+    margin-inline: var(--space-sm);
+  }
+
+  .hero-cta {
+    display: flex;
+    gap: var(--space-md);
+    flex-wrap: wrap;
+  }
+
+  .btn {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    padding: 0.7rem 1.5rem;
+    font-size: 0.925rem;
+    font-weight: 500;
+    border-radius: var(--radius-md);
+    text-decoration: none;
+    transition: all var(--transition-fast);
+    cursor: pointer;
+  }
+
+  .btn-primary {
+    background: var(--color-accent);
+    color: #fff;
+    border: 1px solid var(--color-accent);
+  }
+
+  .btn-primary:hover {
+    background: var(--color-accent-hover);
+    border-color: var(--color-accent-hover);
+    color: #fff;
+  }
+
+  .btn-secondary {
+    background: transparent;
+    color: var(--color-text);
+    border: 1px solid var(--color-border);
+  }
+
+  .btn-secondary:hover {
+    border-color: var(--color-text-tertiary);
+    background: var(--color-surface-raised);
+  }
+
+  @media (max-width: 768px) {
+    .hero {
+      padding-block: var(--space-2xl);
+    }
+
+    .hero-inner {
+      flex-direction: column-reverse;
+      text-align: center;
+    }
+
+    .hero-companies {
+      justify-content: center;
+    }
+
+    .hero-cta {
+      justify-content: center;
+    }
+
+    .hero-photo img {
+      width: 200px;
+      height: 200px;
+    }
+
+    .hero-title {
+      font-size: 2.25rem;
+    }
+  }
+</style>

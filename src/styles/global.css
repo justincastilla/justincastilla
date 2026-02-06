@@ -1,0 +1,286 @@
+/* ============================================
+   Justin Castilla — Portfolio Global Styles
+   ============================================ */
+
+/* --- Reset --- */
+*,
+*::before,
+*::after {
+  box-sizing: border-box;
+  margin: 0;
+  padding: 0;
+}
+
+/* --- Custom Properties --- */
+:root {
+  /* Typography */
+  --font-sans: 'Inter', -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto,
+    Oxygen, Ubuntu, Cantarell, 'Helvetica Neue', sans-serif;
+  --font-mono: 'JetBrains Mono', 'Fira Code', 'SF Mono', Consolas, monospace;
+
+  /* Spacing scale */
+  --space-xs: 0.25rem;
+  --space-sm: 0.5rem;
+  --space-md: 1rem;
+  --space-lg: 1.5rem;
+  --space-xl: 2rem;
+  --space-2xl: 3rem;
+  --space-3xl: 4rem;
+  --space-4xl: 6rem;
+
+  /* Border radius */
+  --radius-sm: 4px;
+  --radius-md: 8px;
+  --radius-lg: 12px;
+  --radius-xl: 16px;
+
+  /* Transitions */
+  --transition-fast: 150ms ease;
+  --transition-base: 250ms ease;
+  --transition-slow: 400ms ease;
+
+  /* Container */
+  --max-width: 1120px;
+  --content-width: 720px;
+
+  /* Light theme (default) */
+  --color-bg: #FAFAF8;
+  --color-surface: #FFFFFF;
+  --color-surface-raised: #F5F5F3;
+  --color-text: #1A1A1A;
+  --color-text-secondary: #555555;
+  --color-text-tertiary: #888888;
+  --color-accent: #2D5A27;
+  --color-accent-hover: #3A7332;
+  --color-accent-subtle: #E8F0E7;
+  --color-border: #E5E5E3;
+  --color-border-light: #F0F0EE;
+  --color-shadow: rgba(0, 0, 0, 0.06);
+  --color-shadow-lg: rgba(0, 0, 0, 0.1);
+  --color-tag-bg: #F0EDE8;
+  --color-tag-text: #4A4540;
+  --color-tag-active-bg: #2D5A27;
+  --color-tag-active-text: #FFFFFF;
+}
+
+[data-theme='dark'] {
+  --color-bg: #111110;
+  --color-surface: #1A1A19;
+  --color-surface-raised: #222221;
+  --color-text: #EDEDEC;
+  --color-text-secondary: #A0A09E;
+  --color-text-tertiary: #6E6E6C;
+  --color-accent: #6ABF5E;
+  --color-accent-hover: #82D476;
+  --color-accent-subtle: #1C2E1A;
+  --color-border: #2A2A28;
+  --color-border-light: #1F1F1E;
+  --color-shadow: rgba(0, 0, 0, 0.2);
+  --color-shadow-lg: rgba(0, 0, 0, 0.35);
+  --color-tag-bg: #2A2A28;
+  --color-tag-text: #C0C0BE;
+  --color-tag-active-bg: #6ABF5E;
+  --color-tag-active-text: #111110;
+}
+
+/* --- Base --- */
+html {
+  font-family: var(--font-sans);
+  color: var(--color-text);
+  background-color: var(--color-bg);
+  line-height: 1.6;
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+  scroll-behavior: smooth;
+  transition: background-color var(--transition-base), color var(--transition-base);
+}
+
+body {
+  min-height: 100dvh;
+  display: flex;
+  flex-direction: column;
+}
+
+main {
+  flex: 1;
+}
+
+img {
+  max-width: 100%;
+  height: auto;
+  display: block;
+}
+
+a {
+  color: var(--color-accent);
+  text-decoration: none;
+  transition: color var(--transition-fast);
+}
+
+a:hover {
+  color: var(--color-accent-hover);
+}
+
+/* --- Typography --- */
+h1, h2, h3, h4, h5, h6 {
+  line-height: 1.25;
+  font-weight: 600;
+  color: var(--color-text);
+  letter-spacing: -0.01em;
+}
+
+h1 { font-size: 2.75rem; }
+h2 { font-size: 2rem; }
+h3 { font-size: 1.5rem; }
+h4 { font-size: 1.25rem; }
+
+p {
+  color: var(--color-text-secondary);
+  line-height: 1.7;
+}
+
+/* --- Utilities --- */
+.container {
+  width: 100%;
+  max-width: var(--max-width);
+  margin-inline: auto;
+  padding-inline: var(--space-lg);
+}
+
+.section {
+  padding-block: var(--space-4xl);
+}
+
+.section-header {
+  margin-bottom: var(--space-2xl);
+}
+
+.section-header h2 {
+  margin-bottom: var(--space-sm);
+}
+
+.section-header p {
+  font-size: 1.1rem;
+  max-width: 600px;
+}
+
+.grid {
+  display: grid;
+  gap: var(--space-lg);
+}
+
+.grid-2 {
+  grid-template-columns: repeat(auto-fill, minmax(320px, 1fr));
+}
+
+.grid-3 {
+  grid-template-columns: repeat(auto-fill, minmax(280px, 1fr));
+}
+
+.sr-only {
+  position: absolute;
+  width: 1px;
+  height: 1px;
+  padding: 0;
+  margin: -1px;
+  overflow: hidden;
+  clip: rect(0, 0, 0, 0);
+  white-space: nowrap;
+  border: 0;
+}
+
+/* --- Responsive --- */
+@media (max-width: 768px) {
+  h1 { font-size: 2rem; }
+  h2 { font-size: 1.5rem; }
+  h3 { font-size: 1.25rem; }
+
+  .section {
+    padding-block: var(--space-2xl);
+  }
+
+  .container {
+    padding-inline: var(--space-md);
+  }
+}
+
+/* --- Focus --- */
+:focus-visible {
+  outline: 2px solid var(--color-accent);
+  outline-offset: 2px;
+  border-radius: var(--radius-sm);
+}
+
+/* --- Selection --- */
+::selection {
+  background-color: var(--color-accent-subtle);
+  color: var(--color-text);
+}
+
+/* --- Prose (for blog content) --- */
+.prose {
+  max-width: var(--content-width);
+}
+
+.prose h1,
+.prose h2,
+.prose h3,
+.prose h4 {
+  margin-top: var(--space-2xl);
+  margin-bottom: var(--space-md);
+}
+
+.prose p {
+  margin-bottom: var(--space-md);
+}
+
+.prose ul,
+.prose ol {
+  margin-bottom: var(--space-md);
+  padding-left: var(--space-lg);
+  color: var(--color-text-secondary);
+}
+
+.prose li {
+  margin-bottom: var(--space-xs);
+}
+
+.prose code {
+  font-family: var(--font-mono);
+  font-size: 0.9em;
+  background: var(--color-surface-raised);
+  padding: 0.15em 0.4em;
+  border-radius: var(--radius-sm);
+}
+
+.prose pre {
+  background: var(--color-surface-raised);
+  padding: var(--space-lg);
+  border-radius: var(--radius-md);
+  overflow-x: auto;
+  margin-bottom: var(--space-md);
+  border: 1px solid var(--color-border);
+}
+
+.prose pre code {
+  background: none;
+  padding: 0;
+}
+
+.prose blockquote {
+  border-left: 3px solid var(--color-accent);
+  padding-left: var(--space-lg);
+  margin-bottom: var(--space-md);
+  color: var(--color-text-secondary);
+  font-style: italic;
+}
+
+.prose a {
+  text-decoration: underline;
+  text-underline-offset: 2px;
+}
+
+.prose img {
+  border-radius: var(--radius-md);
+  margin-block: var(--space-lg);
+}

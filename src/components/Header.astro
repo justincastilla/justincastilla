@@ -1,0 +1,193 @@
+---
+import ThemeToggle from './ThemeToggle.astro';
+
+const navLinks = [
+  { label: 'Videos', href: '/videos' },
+  { label: 'Articles', href: '/articles' },
+  { label: 'Code', href: '/code' },
+  { label: 'Blog', href: '/blog' },
+  { label: 'Contact', href: '/contact' },
+];
+
+const currentPath = Astro.url.pathname;
+---
+<header class="header">
+  <div class="container header-inner">
+    <a href="/" class="logo">
+      <span class="logo-name">Justin Castilla</span>
+    </a>
+
+    <nav class="nav" aria-label="Main navigation">
+      <ul class="nav-list">
+        {navLinks.map((link) => (
+          <li>
+            <a
+              href={link.href}
+              class:list={['nav-link', { active: currentPath.startsWith(link.href) }]}
+            >
+              {link.label}
+            </a>
+          </li>
+        ))}
+      </ul>
+    </nav>
+
+    <div class="header-actions">
+      <ThemeToggle />
+      <button class="mobile-menu-btn" id="mobile-menu-btn" type="button" aria-label="Toggle menu" aria-expanded="false">
+        <svg xmlns="http://www.w3.org/2000/svg" width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+          <line class="line-top" x1="3" y1="6" x2="21" y2="6"/>
+          <line class="line-mid" x1="3" y1="12" x2="21" y2="12"/>
+          <line class="line-bot" x1="3" y1="18" x2="21" y2="18"/>
+        </svg>
+      </button>
+    </div>
+  </div>
+
+  <!-- Mobile nav -->
+  <div class="mobile-nav" id="mobile-nav">
+    <ul class="mobile-nav-list">
+      {navLinks.map((link) => (
+        <li>
+          <a
+            href={link.href}
+            class:list={['mobile-nav-link', { active: currentPath.startsWith(link.href) }]}
+          >
+            {link.label}
+          </a>
+        </li>
+      ))}
+    </ul>
+  </div>
+</header>
+
+<style>
+  .header {
+    position: sticky;
+    top: 0;
+    z-index: 100;
+    background: var(--color-bg);
+    border-bottom: 1px solid var(--color-border);
+    transition: background var(--transition-base);
+  }
+
+  .header-inner {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    height: 64px;
+  }
+
+  .logo {
+    text-decoration: none;
+    color: var(--color-text);
+  }
+
+  .logo-name {
+    font-weight: 700;
+    font-size: 1.1rem;
+    letter-spacing: -0.02em;
+  }
+
+  .nav-list {
+    display: flex;
+    list-style: none;
+    gap: var(--space-xl);
+  }
+
+  .nav-link {
+    color: var(--color-text-secondary);
+    font-size: 0.925rem;
+    font-weight: 500;
+    text-decoration: none;
+    padding-block: var(--space-xs);
+    transition: color var(--transition-fast);
+  }
+
+  .nav-link:hover,
+  .nav-link.active {
+    color: var(--color-text);
+  }
+
+  .nav-link.active {
+    position: relative;
+  }
+
+  .nav-link.active::after {
+    content: '';
+    position: absolute;
+    bottom: -2px;
+    left: 0;
+    right: 0;
+    height: 2px;
+    background: var(--color-accent);
+    border-radius: 1px;
+  }
+
+  .header-actions {
+    display: flex;
+    align-items: center;
+    gap: var(--space-sm);
+  }
+
+  .mobile-menu-btn {
+    display: none;
+    align-items: center;
+    justify-content: center;
+    width: 40px;
+    height: 40px;
+    border: 1px solid var(--color-border);
+    border-radius: var(--radius-md);
+    background: var(--color-surface);
+    color: var(--color-text-secondary);
+    cursor: pointer;
+  }
+
+  .mobile-nav {
+    display: none;
+    border-top: 1px solid var(--color-border);
+    background: var(--color-bg);
+  }
+
+  .mobile-nav.open {
+    display: block;
+  }
+
+  .mobile-nav-list {
+    list-style: none;
+    padding: var(--space-md) var(--space-lg);
+  }
+
+  .mobile-nav-link {
+    display: block;
+    padding: var(--space-sm) 0;
+    color: var(--color-text-secondary);
+    font-weight: 500;
+    text-decoration: none;
+  }
+
+  .mobile-nav-link:hover,
+  .mobile-nav-link.active {
+    color: var(--color-text);
+  }
+
+  @media (max-width: 768px) {
+    .nav { display: none; }
+    .mobile-menu-btn { display: flex; }
+  }
+</style>
+
+<script>
+  function initMobileMenu() {
+    const btn = document.getElementById('mobile-menu-btn');
+    const nav = document.getElementById('mobile-nav');
+
+    btn?.addEventListener('click', () => {
+      const isOpen = nav?.classList.toggle('open');
+      btn.setAttribute('aria-expanded', String(isOpen));
+    });
+  }
+
+  initMobileMenu();
+  document.addEventListener('astro:after-swap', initMobileMenu);
+</script>
