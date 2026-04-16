@@ -12,7 +12,7 @@ export const videos: Video[] = [
   // ── Elastic ──────────────────────────────────────────────
   {
     title: 'From keyword search to semantic search: A complete Elasticsearch guide',
-    description: 'In this video, Justin Castilla walks you through why keyword search breaks on real-world queries — and what to do about it. Using a real e- commerce dataset, you\'ll see how search has evolved from BM25 lexical matching to semantic understanding. We cover dense and parse vector search, hybrid search with Reciprocal Rank Fusion (RRF), and semantic reranking using Cross-Encoder models like Jina Reranker v3.    You\'ll also see how the semantic_text field type (introduced in Elasticsearch 8.15) cuts most of the setup complexity — and how ES|QL fits into the picture. By the end, you\'ll know which search strategy fits your use case — whether that\'s a product catalog, parts lookup, or fashion retail.',
+    description: 'In this video, Justin Castilla walks you through why keyword search breaks on real-world queries — and what to do about it. Using a real e- commerce dataset, you\'ll see how search has evolved from BM25 lexical matching to semantic understanding.',
     url: 'https://www.youtube.com/watch?v=z2QycTnKB7g',
     company: 'Elastic',
     type: 'tutorial',
